@@ -1,4 +1,4 @@
-module Nag
+module Urge
   module Persistence
     module Base
 
@@ -71,4 +71,4 @@ module Nag
     end
   end # Base
 
-end # Nag
+end # Urge

@@ -1,4 +1,4 @@
-# Nag
+# Urge
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'nag'
+    gem 'urge'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install nag
+    $ gem install urge
 
 ## Usage
 

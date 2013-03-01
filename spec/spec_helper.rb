@@ -1,4 +1,4 @@
-require 'nag'
+require 'urge'
 
 Logging.configure do
   
@@ -40,7 +40,7 @@ end
 
 require 'aasm'
 require 'logging'
-require 'nag/scheduled'
+require 'urge/scheduled'
 require 'active_support/time'
 require 'active_record'
 require 'factory_girl'
@@ -49,7 +49,7 @@ FactoryGirl.find_definitions
 
 class ScheduledTask
 
-  include Nag::Scheduled
+  include Urge::Scheduled
   
   attr_reader :logger
 

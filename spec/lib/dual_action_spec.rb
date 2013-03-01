@@ -5,7 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 # 
 class TwoTask
   
-  include Nag::Scheduled
+  include Urge::Scheduled
   
   attr_accessor :scheduled_for_one, :scheduled_for_two
   
@@ -20,8 +20,8 @@ class TwoTask
     @actions = options[:actions]
   end
 
-  nag_schedule( :one, :scheduled_for => :scheduled_for_one, :action => :take_one )
-  nag_schedule( :two, :scheduled_for => :scheduled_for_two, :action => :take_two )
+  urge_schedule( :one, :scheduled_for => :scheduled_for_one, :action => :take_one )
+  urge_schedule( :two, :scheduled_for => :scheduled_for_two, :action => :take_two )
   
   def take_one
     @actions << :action_one
@@ -35,7 +35,7 @@ class TwoTask
   
 end
 
-describe Nag::Scheduled do
+describe Urge::Scheduled do
   
   context "when applied to an in memory object requiring two separate actions, that object" do
     

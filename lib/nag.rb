@@ -1,10 +1,10 @@
-require 'nag/version'
-require 'nag/scheduled'
-require 'nag/persistence'
+require 'urge/version'
+require 'urge/scheduled'
+require 'urge/persistence'
 
-# require 'nag/credit_control'
+# require 'urge/credit_control'
 
 require 'logging'
 
-module Nag
+module Urge
 end

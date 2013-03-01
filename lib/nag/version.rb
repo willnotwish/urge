@@ -1,3 +1,3 @@
-module Nag
+module Urge
   VERSION = "0.0.1"
 end

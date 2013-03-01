@@ -4,10 +4,10 @@ load_schema
 
 class DualActionGuest < ActiveRecord::Base
 
-  include Nag::Scheduled
+  include Urge::Scheduled
 
-  nag_schedule( :status_check,    :scheduled_for => :status_check_at, :action => :check_status )
-  nag_schedule( :insurance_check, :scheduled_for => :insurance_check_at, :action => :check_insurance )
+  urge_schedule( :status_check,    :scheduled_for => :status_check_at, :action => :check_status )
+  urge_schedule( :insurance_check, :scheduled_for => :insurance_check_at, :action => :check_insurance )
   
   def status_checked?
     @status_checked

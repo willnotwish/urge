@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'nag/version'
+require 'urge/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "nag"
-  gem.version       = Nag::VERSION
+  gem.name          = "urge"
+  gem.version       = Urge::VERSION
   gem.authors       = ["Nick Adams"]
   gem.email         = ["nadams@dsc.net"]
   gem.description   = %q{Urges an object to take some form of action, on a timed basis}

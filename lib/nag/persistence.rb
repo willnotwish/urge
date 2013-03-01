@@ -1,4 +1,4 @@
-module Nag
+module Urge
   module Persistence
 
     def self.set_persistence(base)
@@ -11,7 +11,7 @@ module Nag
       # require File.join(File.dirname(__FILE__), 'persistence', 'read_state')
       if hierarchy.include?( "ActiveRecord::Base" )
         require File.join( dir_name, 'active_record_persistence' )
-        base.send( :include, Nag::Persistence::ActiveRecordPersistence )
+        base.send( :include, Urge::Persistence::ActiveRecordPersistence )
       end
       
     end

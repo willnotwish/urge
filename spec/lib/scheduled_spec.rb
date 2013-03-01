@@ -11,7 +11,7 @@ Logging.logger['simple'].tap {|logger|
 # 
 class Simple
   
-  include Nag::Scheduled
+  include Urge::Scheduled
   
   attr_accessor :scheduled_for
   attr_reader :actions, :logger
@@ -23,7 +23,7 @@ class Simple
     @actions = []
   end
 
-  nag_schedule( :something, :scheduled_for => :scheduled_for, :action => :do_something )
+  urge_schedule( :something, :scheduled_for => :scheduled_for, :action => :do_something )
   
   def do_something
     @actions << :foo
@@ -32,7 +32,7 @@ class Simple
   
 end
 
-describe Nag::Scheduled do
+describe Urge::Scheduled do
   
   context "when applied to a simple, in memory object" do
     

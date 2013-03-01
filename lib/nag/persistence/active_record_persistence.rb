@@ -1,11 +1,11 @@
-module Nag
+module Urge
   module Persistence
     module ActiveRecordPersistence
 
       def self.included( base )
-        base.extend Nag::Persistence::Base::ClassMethods
-        base.extend Nag::Persistence::ActiveRecordPersistence::ClassMethods
-        base.send( :include, Nag::Persistence::ActiveRecordPersistence::InstanceMethods )
+        base.extend Urge::Persistence::Base::ClassMethods
+        base.extend Urge::Persistence::ActiveRecordPersistence::ClassMethods
+        base.send( :include, Urge::Persistence::ActiveRecordPersistence::InstanceMethods )
       end
 
       module ClassMethods

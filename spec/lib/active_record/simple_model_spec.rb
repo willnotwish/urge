@@ -4,9 +4,9 @@ load_schema
 
 class SimpleGuest < ActiveRecord::Base
 
-  include Nag::Scheduled
+  include Urge::Scheduled
 
-  nag_schedule( :default, :scheduled_for => :scheduled_for, :action => :take_action )
+  urge_schedule( :default, :scheduled_for => :scheduled_for, :action => :take_action )
 
 private
 

@@ -1,6 +1,6 @@
 require 'logging'
 
-module Nag
+module Urge
   module Scheduled
     module ClassMethods
 
@@ -25,7 +25,7 @@ module Nag
         @@logger ||= Logging.logger[self]
       end
 
-      def nag_schedule( name, options = {} )
+      def urge_schedule( name, options = {} )
         logger.info "Defining schedule: #{name}. Options: #{options}. Class: #{self.name}"
         raise 'Cannot have two schedules with the same name' if schedules[name]
         schedules[name] = options
@@ -87,7 +87,7 @@ module Nag
     def self.included(base)
       base.extend ClassMethods
       base.send :include, InstanceMethods
-      Nag::Persistence.set_persistence(base)
+      Urge::Persistence.set_persistence(base)
     end
   end
 end
