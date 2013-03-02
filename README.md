@@ -1,6 +1,6 @@
 # Urge
 
-TODO: Write a gem description
+Urges action on a timed basis
 
 ## Installation
 
