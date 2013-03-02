@@ -40,7 +40,7 @@ module Urge
         def run_all!( name )
           now = DateTime.now
           logger.debug "run_all! Time now: #{now}"
-          ready_to_run( now ).each do |task|
+          ready_to_run( name, now ).each do |task|
             logger.debug "Task of class #{task.class.name} is about to be run! (with a bang)"
             task.run!( name )
           end

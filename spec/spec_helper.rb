@@ -47,22 +47,22 @@ require 'factory_girl'
 
 FactoryGirl.find_definitions
 
-class ScheduledTask
-
-  include Urge::Scheduled
-  
-  attr_reader :logger
-
-  def initialize( name, options = {} )
-    if options[:logger]
-      @logger = options[:logger]
-    else
-      @logger = Logging.logger['scheduled_task_test']
-    end
-    self.name = name
-  end
-
-end
+# class ScheduledTask
+# 
+#   include Urge::Scheduled
+#   
+#   attr_reader :logger
+# 
+#   def initialize( name, options = {} )
+#     if options[:logger]
+#       @logger = options[:logger]
+#     else
+#       @logger = Logging.logger['scheduled_task_test']
+#     end
+#     self.name = name
+#   end
+# 
+# end
 
 ActiveRecord::Base.logger = Logging.logger['credit_control_test']
 
@@ -72,6 +72,6 @@ def load_schema
   load( File.dirname(__FILE__) + "/schema.rb" )
 end
 
-class Client < ActiveRecord::Base
-end
+# class Client < ActiveRecord::Base
+# end
 
