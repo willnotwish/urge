@@ -27,7 +27,11 @@ module Urge
 
       def urge_schedule( name, options = {} )
         logger.info "Defining schedule: #{name}. Options: #{options}. Class: #{self.name}"
-        raise 'Cannot have two schedules with the same name' if schedules[name]
+
+        # Warn if a schedule with this name already exists, but don't bail out.
+        # It's not necessarily an error. Rails autoloading classes is an example where it's not...
+        logger.warn "A schedule with this name already exists. Old options: #{schedules[name]}" if schedules[name]
+
         schedules[name] = options
       end
       
