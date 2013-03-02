@@ -10,7 +10,7 @@ class SimpleGuest < ActiveRecord::Base
 
 private
 
-  def take_action
+  def take_action( options )
     logger.debug "In take_action. About to return empty set"
     nil
   end
@@ -55,8 +55,10 @@ describe 'Simplest active record model' do
     @guest.should be_ready_to_run( :default )
   end
   
-  it "should have a nil attribute name if the attribute doesn't exist" do
-    SimpleGuest.attr_name( :non_existent ).should be_nil
+  it "should raise an exception if an attempt is made to access a schedule that doesn't exist" do
+    expect {
+      SimpleGuest.attr_name( :non_existent ).should be_nil
+    }.to raise_error
   end
   
   context "when run" do

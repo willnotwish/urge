@@ -33,12 +33,16 @@ module Urge
       
       def schedules
         @@per_class_schedules ||= {}
-        @@per_class_schedules[self.class.name] ||= {}
+        @@per_class_schedules[self.name] ||= {}
       end
 
       def attr_name( name )
         raise 'Non existent schedule name' if schedules[name].blank?
         schedules[name][:scheduled_for] || "scheduled_for_#{name}"
+      end
+      
+      def all_schedules
+        @@per_class_schedules
       end
 
     end
@@ -58,12 +62,10 @@ module Urge
       # Takes action and reschedules itself. That is all, and that is enough!
       def run( name, options = {} )
 
-        logger.warn "Must implement dry run handling"
-
         return false unless ready_to_run?( name )
         
         logger.debug "About to call take_action_#{name}"
-        interval = internal_take_action( name )
+        interval = internal_take_action( name, options )
 
         logger.debug "Action taken. Calculated run interval: #{interval ? interval : 'none - task will *not* be rescheduled'}"
         reschedule( name, interval ? interval.from_now : nil )
@@ -74,8 +76,8 @@ module Urge
 
     private
 
-      def internal_take_action( name )
-        self.send( self.class.schedules[name][:action] || "take_action_#{name}".to_sym )
+      def internal_take_action( name, options )
+        self.send( self.class.schedules[name][:action] || "take_action_#{name}".to_sym, options )
       end
 
       def attr_name( name )

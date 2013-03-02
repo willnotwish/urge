@@ -2,6 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 load_schema
 
+Logging.logger['simple'].tap {|logger| 
+  logger.add_appenders 'colourful_stdout'
+  logger.level = :debug
+}
+
+
+
+logger = Logging.logger['simple']
+
+
 class DualActionGuest < ActiveRecord::Base
 
   include Urge::Scheduled
@@ -19,13 +29,13 @@ class DualActionGuest < ActiveRecord::Base
 
 private
 
-  def check_status
+  def check_status( options )
     logger.debug "In check_status"
     @status_checked = true
     nil
   end
   
-  def check_insurance
+  def check_insurance( options )
     logger.debug "In check_insurance"
     @insurance_checked = true
     nil
@@ -33,6 +43,10 @@ private
 
 end
 
+Logging.logger[DualActionGuest].tap {|logger| 
+  logger.add_appenders 'colourful_stdout'
+  logger.level = :debug
+}
 
 FactoryGirl.define do
 
@@ -103,6 +117,9 @@ describe "AR finders" do
   end
   
   it "should return the correct number guests ready to run" do
+
+    logger.info "All schedules: #{DualActionGuest.all_schedules}"
+    
     expect {
       DualActionGuest.ready_to_run( :default )
     }.to raise_error( RuntimeError )

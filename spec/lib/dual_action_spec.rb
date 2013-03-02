@@ -23,12 +23,12 @@ class TwoTask
   urge_schedule( :one, :scheduled_for => :scheduled_for_one, :action => :take_one )
   urge_schedule( :two, :scheduled_for => :scheduled_for_two, :action => :take_two )
   
-  def take_one
+  def take_one( options )
     @actions << :action_one
     1.hour
   end
   
-  def take_two
+  def take_two( options )
     @actions << :action_two
     2.hours
   end

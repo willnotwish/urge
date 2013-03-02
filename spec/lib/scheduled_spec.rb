@@ -25,7 +25,7 @@ class Simple
 
   urge_schedule( :something, :scheduled_for => :scheduled_for, :action => :do_something )
   
-  def do_something
+  def do_something( options )
     @actions << :foo
     nil
   end
