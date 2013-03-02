@@ -1,6 +1,6 @@
 # Urge
 
-Urges action on a timed basis
+Urges action on a timed basis. Works with persistent and transient objects.
 
 ## Installation
 
