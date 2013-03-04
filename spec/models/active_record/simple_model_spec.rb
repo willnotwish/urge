@@ -4,9 +4,8 @@ load_schema
 
 class SimpleGuest < ActiveRecord::Base
 
-  include Urge::Scheduled
-
-  urge_schedule( :default, :scheduled_for => :scheduled_for, :action => :take_action )
+  include Urge
+  urge_schedule( :default, :timestamp_name => :scheduled_for, :action => :take_action )
 
 private
 
@@ -52,7 +51,7 @@ describe 'Simplest active record model' do
   end
   
   it "should be ready to run" do
-    @guest.should be_ready_to_run( :default )
+    @guest.should be_urgent( :default )
   end
   
   it "should raise an exception if an attempt is made to access a schedule that doesn't exist" do
@@ -61,9 +60,9 @@ describe 'Simplest active record model' do
     }.to raise_error
   end
   
-  context "when run" do
+  context "when urged" do
     before(:each) do
-      @guest.run :default
+      @guest.urge :default
     end
     
     it "should not be rescheduled" do
@@ -73,7 +72,7 @@ describe 'Simplest active record model' do
   
 end
 
-describe "AR finders" do
+describe "Class method finders" do
   
   before(:each) do
     
@@ -85,8 +84,8 @@ describe "AR finders" do
     end
   end
   
-  it "should return the correct number guests ready to run" do
-    SimpleGuest.ready_to_run( :default ).should have(@count).items
+  it "should find the correct number of urgent guests" do
+    SimpleGuest.urgent( :default ).should have(@count).items
   end
   
 end
@@ -104,18 +103,18 @@ describe "AR saving. 10 guests, when scheduled" do
     
   end
   
-  it "should return the correct number guests ready to run" do
-    SimpleGuest.ready_to_run( :default ).should have(@count).items
+  it "should return the correct number of urgent guests" do
+    SimpleGuest.urgent( :default ).should have(@count).items
   end
 
-  context "when run" do
+  context "when urged" do
     
     before(:each) do
-      SimpleGuest.run_all! :default
+      SimpleGuest.urge_all! :default
     end
     
-    it "should have no guests ready to run" do
-      SimpleGuest.ready_to_run( :default ).should be_empty
+    it "should have no urgent guests" do
+      SimpleGuest.urgent( :default ).should be_empty
     end
     
   end

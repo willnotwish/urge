@@ -14,10 +14,10 @@ logger = Logging.logger['simple']
 
 class DualActionGuest < ActiveRecord::Base
 
-  include Urge::Scheduled
+  include Urge
 
-  urge_schedule( :status_check,    :scheduled_for => :status_check_at, :action => :check_status )
-  urge_schedule( :insurance_check, :scheduled_for => :insurance_check_at, :action => :check_insurance )
+  urge_schedule( :status_check,    :timestamp_name => :status_check_at, :action => :check_status )
+  urge_schedule( :insurance_check, :timestamp_name => :insurance_check_at, :action => :check_insurance )
   
   def status_checked?
     @status_checked
@@ -83,13 +83,13 @@ describe 'AR model with more than one schedule' do
         @checks = [:status_check, :insurance_check]
       end
 
-      it "both checks should be ready to run" do
-        @checks.each { |c| @guest.should be_ready_to_run( c ) }
+      it "both checks should be urgent" do
+        @checks.each { |c| @guest.should be_urgent( c ) }
       end
 
       context "when run" do
         before(:each) do
-          @checks.each { |c| @guest.run( c )}
+          @checks.each { |c| @guest.urge( c )}
         end
         
         it "should result in the guest having his status and his insurance checked" do
@@ -118,14 +118,12 @@ describe "AR finders" do
   
   it "should return the correct number guests ready to run" do
 
-    logger.info "All schedules: #{DualActionGuest.all_schedules}"
-    
     expect {
-      DualActionGuest.ready_to_run( :default )
+      DualActionGuest.urgent( :default )
     }.to raise_error( RuntimeError )
     
-    DualActionGuest.ready_to_run( :status_check ).should have(@count).items
-    DualActionGuest.ready_to_run( :insurance_check ).should have(@count).items
+    DualActionGuest.urgent( :status_check ).should have(@count).items
+    DualActionGuest.urgent( :insurance_check ).should have(@count).items
   end
   
 end

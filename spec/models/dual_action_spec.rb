@@ -5,7 +5,7 @@ require 'spec_helper'
 # 
 class TwoTask
   
-  include Urge::Scheduled
+  include Urge
   
   attr_accessor :scheduled_for_one, :scheduled_for_two
   
@@ -15,13 +15,13 @@ class TwoTask
     @scheduled_for_one = attrs[:scheduled_for_one]
     @scheduled_for_two = attrs[:scheduled_for_two]
 
-    @logger = options[:logger] || Logging.logger['scheduled_test']
+    @logger = options[:logger] || Logging.logger['test']
 
     @actions = options[:actions]
   end
 
-  urge_schedule( :one, :scheduled_for => :scheduled_for_one, :action => :take_one )
-  urge_schedule( :two, :scheduled_for => :scheduled_for_two, :action => :take_two )
+  urge_schedule( :one, :timestamp_name => :scheduled_for_one, :action => :take_one )
+  urge_schedule( :two, :timestamp_name => :scheduled_for_two, :action => :take_two )
   
   def take_one( options )
     @actions << :action_one
@@ -35,7 +35,7 @@ class TwoTask
   
 end
 
-describe Urge::Scheduled do
+describe Urge do
   
   context "when applied to an in memory object requiring two separate actions, that object" do
     
@@ -53,10 +53,10 @@ describe Urge::Scheduled do
       @actions.should be_empty
     end
     
-    context "when run in the context of task 1" do
+    context "when urged in the context of task 1" do
       
       before(:each) do
-        @object.run( :one )
+        @object.urge( :one )
       end
       
       it "should produce one action" do
@@ -70,10 +70,10 @@ describe Urge::Scheduled do
       
     end
 
-    context "when run in the context of task 2" do
+    context "when urged in the context of task 2" do
       
       before(:each) do
-        @object.run( :two )
+        @object.urge( :two )
       end
       
       it "should produce another action" do
@@ -87,11 +87,11 @@ describe Urge::Scheduled do
       
     end
     
-    context "when run in the context of both tasks" do
+    context "when urged in the context of both tasks" do
 
       before(:each) do
-        @object.run( :one )
-        @object.run( :two )
+        @object.urge( :one )
+        @object.urge( :two )
       end
 
       it "should produce two actions" do

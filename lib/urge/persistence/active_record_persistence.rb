@@ -11,10 +11,10 @@ module Urge
       module ClassMethods
 
         # AR finder
-        def ready_to_run( name, at = DateTime.now )
-          options = schedules[name]
+        def urgent( name, at = DateTime.now )
+          options = urge_schedules[name]
           raise 'Unknown schedule' unless options
-          where( "#{attr_name(name)} < ?", at )
+          where( "#{urge_attr_name(name)} < ?", at )
         end
 
 
@@ -36,22 +36,16 @@ module Urge
         #   matches
         # end
   
-        # Same as Scheduled::run_all but saves the rescheduled task
-        def run_all!( name )
-          now = DateTime.now
-          logger.debug "run_all! Time now: #{now}"
-          ready_to_run( name, now ).each do |task|
-            logger.debug "Task of class #{task.class.name} is about to be run! (with a bang)"
-            task.run!( name )
-          end
+        def urge_all!( name )
+          urgent( name ).each { |u| u.urge!( name ) }
         end
       
       end
       
       module InstanceMethods
         
-        def run!( name, options = {} )
-          run( name, options )
+        def urge!( name, options = {} )
+          urge( name, options )
           save!
         end
         
