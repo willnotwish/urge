@@ -26,7 +26,7 @@ class Simple
   urge_schedule :something, :action => 'do_something'
   
   def do_something( options )
-    @actions << :foo
+    @actions << :foo unless options[:dry_run]
     nil
   end
   
@@ -65,6 +65,22 @@ describe Urge do
       
       before(:each) do
         @object.something_at = 1.second.ago
+      end
+
+      context "when urged to do a dry run in the correct context" do
+
+        before(:each) do
+          @object.urge( :something, :dry_run => true )
+        end
+
+        it "should not produce any actions" do
+          @object.actions.should be_empty
+        end
+
+        it "should not be rescheduled" do
+          @object.something_at.should be_nil
+        end
+
       end
 
       context "when urged in the correct context" do
