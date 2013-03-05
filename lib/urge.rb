@@ -7,25 +7,12 @@ module Urge
 
   module ClassMethods
 
-    # def run_all( name )
-    #   now = DateTime.now
-    #   logger.debug "run_all. Time now: #{now}"
-    #   ready_to_run( name, now ).each do |task|
-    #     logger.debug "Task of class #{task.class.name} named: #{name} is about to be run"
-    #     task.run( name )
-    #   end
-    # end
-    # 
-    # def inspect_all( name )
-    #   now = DateTime.now
-    #   tasks = ready_to_run( name, now )
-    #   logger.info "inspect_queue. Time now: #{now}. The following #{tasks.size} tasks are ready to run"
-    #   tasks.each { |task| logger.info task.inspect }
-    #   tasks
-    # end
-
     def urge_logger
-      @@urge_logger ||= Logging.logger[self]
+      @@urge_logger ||= Logging.logger['urge']
+    end
+    
+    def urge_logger= ( logger )
+      @@urge_logger = logger
     end
 
     def urge_schedule( name, options = {} )
@@ -64,7 +51,7 @@ module Urge
     # private
 
     def urge_attr_name( name )
-      raise 'Non existent schedule name' unless urge_schedules[name]
+      raise "Non existent urge name: #{name}" unless urge_schedules[name]
       urge_schedules[name][:timestamp_name]
     end
 
@@ -81,20 +68,31 @@ module Urge
     end
 
     def urge_reschedule( name, _when )
-      urge_logger.debug "ScheduledTask#reschedule about to reschedule for #{_when}"
+      if _when
+        urge_logger.debug "Rescheduling #{name} for #{_when}"
+      else
+        urge_logger.debug "Urge #{name} will not be rescheduled"
+      end
       self.send( "#{urge_attr_name(name)}=", _when )
     end
 
-    # Takes action and reschedules itself. That is all, and that is enough!
+    # Takes action and reschedules itself
     def urge( name, options = {} )
 
+      urge_logger.debug "About to urge #{name}. Class: #{self.class.name}"
       return false unless urgent?( name )
 
       # NEW. The value returned from the urge is an instant in time (an absolute timestamp)
-      ts = self.send( self.class.urge_schedules[name][:action].to_sym, options )
-      urge_reschedule( name, ts )
-      true
-
+      begin
+        method_name = self.class.urge_schedules[name][:action].to_sym
+        urge_logger.debug "About to send #{method_name} message to #{self}"
+        ts = self.send( method_name, options )
+        urge_reschedule( name, ts )
+        true
+      rescue Exception => e
+        urge_logger.error "Exception of class #{e.class} caught when urging #{name}. Detail: #{e}"
+        false
+      end
     end
 
   private

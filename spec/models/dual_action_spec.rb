@@ -9,14 +9,9 @@ class TwoTask
   
   attr_accessor :scheduled_for_one, :scheduled_for_two, :t2
   
-  attr_reader :logger
-  
   def initialize( attrs, options )
     @scheduled_for_one = attrs[:scheduled_for_one]
     @scheduled_for_two = attrs[:scheduled_for_two]
-
-    @logger = options[:logger] || Logging.logger['test']
-
     @actions = options[:actions]
     @t2 = Time.now + 2.hours
   end

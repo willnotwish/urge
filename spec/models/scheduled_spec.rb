@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-Logging.logger['simple'].tap {|logger| 
-  logger.add_appenders 'colourful_stdout'
-  logger.level = :info
-}
-
 # 
 # 
 # 
@@ -18,8 +13,6 @@ class Simple
   
   def initialize( attrs = {} )
     self.something_at = attrs[:something_at]
-
-    @logger = Logging.logger['simple']
     @actions = []
   end
 
@@ -31,6 +24,33 @@ class Simple
   end
   
 end
+
+# 
+# 
+# 
+class Broken
+
+  # By including the Urge module, we drag in all the class methods from that module
+  include Urge
+  
+  attr_accessor :something_at
+  attr_reader :actions, :logger
+  
+  def initialize( attrs = {} )
+    self.something_at = attrs[:something_at]
+    @actions = []
+  end
+
+  urge_schedule :something, :action => 'break_something'
+  
+  def break_something( options )
+    raise 'broken'
+    nil
+  end
+  
+end
+
+
 
 describe Urge do
   
@@ -50,7 +70,7 @@ describe Urge do
       context "when urged to do something" do
 
         before(:each) do
-          @object.urge( :something )
+          @object.urge( :something ).should be_false
         end
 
         it "should do nothing" do
