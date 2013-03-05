@@ -7,7 +7,7 @@ class TwoTask
   
   include Urge
   
-  attr_accessor :scheduled_for_one, :scheduled_for_two
+  attr_accessor :scheduled_for_one, :scheduled_for_two, :t2
   
   attr_reader :logger
   
@@ -18,6 +18,7 @@ class TwoTask
     @logger = options[:logger] || Logging.logger['test']
 
     @actions = options[:actions]
+    @t2 = Time.now + 2.hours
   end
 
   urge_schedule( :one, :timestamp_name => :scheduled_for_one, :action => :take_one )
@@ -30,7 +31,7 @@ class TwoTask
   
   def take_two( options )
     @actions << :action_two
-    2.hours
+    t2
   end
   
 end
@@ -82,7 +83,7 @@ describe Urge do
       end
 
       it "should be rescheduled for two hours' time" do
-        @object.scheduled_for_two.to_i.should eq( (Time.now + 2.hours).to_i )
+        @object.scheduled_for_two.to_i.should eq( @object.t2.to_i )
       end
       
     end

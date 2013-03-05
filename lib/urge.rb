@@ -90,8 +90,14 @@ module Urge
 
       return false unless urgent?( name )
 
-      interval = self.send( self.class.urge_schedules[name][:action].to_sym, options )
-      urge_reschedule( name, interval ? interval.from_now : nil )
+      # NEW. The value returned from the urge can be either an interval (from now) or an instant in time (an absolute timestamp)
+      interval_or_timestamp = self.send( self.class.urge_schedules[name][:action].to_sym, options )
+      if interval_or_timestamp.nil?
+        ts = nil
+      else
+        ts = interval_or_timestamp.respond_to?( :from_now ) ? interval_or_timestamp.from_now : interval_or_timestamp
+      end
+      urge_reschedule( name, ts )
       true
 
     end

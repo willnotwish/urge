@@ -30,10 +30,6 @@ class Simple
     nil
   end
   
-  # def self.attr_name( name )
-  #   raise 'ILLEGAL!'
-  # end
-  
 end
 
 describe Urge do
