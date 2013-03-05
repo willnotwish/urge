@@ -26,7 +26,7 @@ class TwoTask
   
   def take_one( options )
     @actions << :action_one
-    1.hour
+    1.hour.from_now
   end
   
   def take_two( options )
