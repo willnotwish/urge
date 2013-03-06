@@ -36,8 +36,8 @@ module Urge
         #   matches
         # end
   
-        def urge_all!( name )
-          urgent( name ).each { |u| u.urge!( name ) }
+        def urge_all!( name, options = {} )
+          urgent( name ).each { |u| u.urge!( name, options ) }
         end
       
       end
