@@ -37,7 +37,7 @@ module Urge
         # end
   
         def urge_all!( name, options = {} )
-          urgent( name ).each { |u| u.urge!( name, options ) }
+          urgent( name ).each { |u| u.urge!( name, options.dup ) }
         end
       
       end
